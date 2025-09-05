@@ -1,0 +1,4 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BWK Woo Accounting\n"
+"Language: \n"
