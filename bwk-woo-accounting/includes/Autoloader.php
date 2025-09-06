@@ -12,9 +12,19 @@ class Autoloader {
         if ( 0 !== strncmp( $prefix, $class, $len ) ) {
             return;
         }
+
         $relative = substr( $class, $len );
-        $relative_path = str_replace( '\\', DIRECTORY_SEPARATOR, $relative );
-        $file = BWK_ACC_PATH . $relative_path . '.php';
+        $relative = ltrim( $relative, '\\' );
+
+        // Map Admin namespace to admin directory; everything else lives in includes.
+        if ( 0 === strpos( $relative, 'Admin\\' ) ) {
+            $relative_path = substr( $relative, strlen( 'Admin\\' ) );
+            $path          = 'admin/' . str_replace( '\\', '/', $relative_path ) . '.php';
+        } else {
+            $path = 'includes/' . str_replace( '\\', '/', $relative ) . '.php';
+        }
+
+        $file = BWK_ACC_PATH . $path;
         if ( file_exists( $file ) ) {
             require $file;
         }
